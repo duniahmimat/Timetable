@@ -1,0 +1,223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .clickable-cell {
+            cursor: pointer;
+        }
+        .clickable-cell:hover {
+            background-color: #f5f5f5;
+        }
+        .selected {
+            background-color: #c6efce;
+        }
+        .input-section, .result-table {
+            margin-top: 20px;
+        }
+        .result-table table {
+            margin-top: 10px;
+        }
+        .subject-checkbox {
+            display: flex;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subject Selection</h1>
+
+    <div class="input-section">
+        <label for="studentName">Enter your name: </label>
+        <input type="text" id="studentName" placeholder="Student Name" required>
+    </div>
+
+    <h2>Select Subjects for Sunday, Tuesday, and Thursday</h2>
+    <table id="grid1">
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>Period 4</th>
+                <th>Period 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-option="A">
+                <td>A</td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="A1_1" data-period="1"><label for="A1_1">Math</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="A1_2" data-period="2"><label for="A1_2">English</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="A1_3" data-period="3"><label for="A1_3">Science</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="A1_4" data-period="4"><label for="A1_4">History</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="A1_5" data-period="5"><label for="A1_5">Art</label></div></td>
+            </tr>
+            <!-- Repeat similar structure for other options -->
+        </tbody>
+    </table>
+
+    <h2>Select Subjects for Monday and Wednesday</h2>
+    <table id="grid2">
+        <thead>
+            <tr>
+                <th>Option</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>Period 4</th>
+                <th>Period 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr data-option="A">
+                <td>A</td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="B1_1" data-period="1"><label for="B1_1">French</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="B1_2" data-period="2"><label for="B1_2">German</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="B1_3" data-period="3"><label for="B1_3">Latin</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="B1_4" data-period="4"><label for="B1_4">Italian</label></div></td>
+                <td><div class="subject-checkbox"><input type="checkbox" id="B1_5" data-period="5"><label for="B1_5">Spanish</label></div></td>
+            </tr>
+            <!-- Repeat similar structure for other options -->
+        </tbody>
+    </table>
+
+    <button onclick="generateAndDownloadTable()">Generate and Download Combined Table</button>
+
+    <div id="combinedTable" class="result-table"></div>
+
+    <script>
+        let selectedSubjects1 = [];
+        let selectedSubjects2 = [];
+
+        function updateSelectedSubjects(gridId, setter) {
+            document.querySelectorAll(`#${gridId} .subject-checkbox input[type="checkbox"]`).forEach(checkbox => {
+                checkbox.addEventListener('change', function() {
+                    const option = this.closest('tr').dataset.option;
+                    const period = this.dataset.period;
+                    const subject = this.nextElementSibling.textContent;
+
+                    if (this.checked) {
+                        setter(option, period, subject);
+                    } else {
+                        setter(option, period, null, true);
+                    }
+                });
+            });
+        }
+
+        updateSelectedSubjects('grid1', (option, period, subject, remove = false) => {
+            if (remove) {
+                selectedSubjects1 = selectedSubjects1.filter(sub => sub.option !== option || sub.period !== period);
+            } else {
+                selectedSubjects1.push({ option, period, subject });
+            }
+        });
+
+        updateSelectedSubjects('grid2', (option, period, subject, remove = false) => {
+            if (remove) {
+                selectedSubjects2 = selectedSubjects2.filter(sub => sub.option !== option || sub.period !== period);
+            } else {
+                selectedSubjects2.push({ option, period, subject });
+            }
+        });
+
+        function generateAndDownloadTable() {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                alert('Please enter your name.');
+                return;
+            }
+
+            const combinedTable = document.getElementById('combinedTable');
+            combinedTable.innerHTML = '';
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Header row with student name
+            const headerRow = document.createElement('tr');
+            const headerCell = document.createElement('th');
+            headerCell.colSpan = 6;
+            headerCell.textContent = `${studentName}'s Combined Selected Subjects`;
+            headerRow.appendChild(headerCell);
+            thead.appendChild(headerRow);
+
+            // Table header
+            const header = document.createElement('tr');
+            header.appendChild(document.createElement('th')).textContent = 'Day';
+            for (let i = 1; i <= 5; i++) {
+                const th = document.createElement('th');
+                th.textContent = `Period ${i}`;
+                header.appendChild(th);
+            }
+            thead.appendChild(header);
+
+            // Days and corresponding selected options
+            const days = [
+                { day: 'Sunday', subjects: selectedSubjects1 },
+                { day: 'Monday', subjects: selectedSubjects2 },
+                { day: 'Tuesday', subjects: selectedSubjects1 },
+                { day: 'Wednesday', subjects: selectedSubjects2 },
+                { day: 'Thursday', subjects: selectedSubjects1 }
+            ];
+
+            days.forEach(({ day, subjects }) => {
+                const row = document.createElement('tr');
+                row.appendChild(document.createElement('td')).textContent = day;
+                
+                for (let period = 1; period <= 5; period++) {
+                    const cell = document.createElement('td');
+                    const subject = subjects.find(sub => sub.period == period);
+                    cell.textContent = subject ? subject.subject : '-';
+                    row.appendChild(cell);
+                }
+                
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            combinedTable.appendChild(table);
+
+            // Convert table to CSV and download
+            const csv = tableToCSV(table);
+            downloadCSV(csv, `${studentName}_combined_schedule.csv`);
+        }
+
+        function tableToCSV(table) {
+            let csv = '';
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td, th');
+                const data = Array.from(cols).map(col => col.textContent).join(',');
+                csv += data + '\n';
+            });
+            return csv;
+        }
+
+        function downloadCSV(csv, filename) {
+            const csvFile = new Blob([csv], { type: 'text/csv' });
+            const downloadLink = document.createElement('a');
+            downloadLink.download = filename;
+            downloadLink.href = URL.createObjectURL(csvFile
