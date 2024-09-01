@@ -1,0 +1,276 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Subject Selection</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 20px;
+        }
+        table {
+            border-collapse: collapse;
+            width: 100%;
+            margin-bottom: 20px;
+        }
+        th, td {
+            border: 1px solid black;
+            padding: 8px;
+            text-align: center;
+        }
+        th {
+            background-color: #f2f2f2;
+        }
+        .clickable-cell {
+            cursor: pointer;
+        }
+        .clickable-cell:hover {
+            background-color: #e0e0e0;
+        }
+        .selected {
+            background-color: #c6efce;
+        }
+        .input-section, .result-table {
+            margin-top: 20px;
+        }
+        .result-table table {
+            margin-top: 10px;
+        }
+    </style>
+</head>
+<body>
+    <h1>Subject Selection</h1>
+
+    <div class="input-section">
+        <label for="studentName">Enter your name: </label>
+        <input type="text" id="studentName" placeholder="Student Name" required>
+    </div>
+
+    <h2>Select Subjects for Sunday, Tuesday, and Thursday</h2>
+    <table id="grid1">
+        <thead>
+            <tr>
+                <th>Option / Period</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>Period 4</th>
+                <th>Period 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>A</td>
+                <td class="clickable-cell" data-period="1" data-option="A">Math</td>
+                <td class="clickable-cell" data-period="2" data-option="A">English</td>
+                <td class="clickable-cell" data-period="3" data-option="A">Science</td>
+                <td class="clickable-cell" data-period="4" data-option="A">History</td>
+                <td class="clickable-cell" data-period="5" data-option="A">Art</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td class="clickable-cell" data-period="1" data-option="B">Biology</td>
+                <td class="clickable-cell" data-period="2" data-option="B">Chemistry</td>
+                <td class="clickable-cell" data-period="3" data-option="B">Physics</td>
+                <td class="clickable-cell" data-period="4" data-option="B">Geography</td>
+                <td class="clickable-cell" data-period="5" data-option="B">PE</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td class="clickable-cell" data-period="1" data-option="C">Computer Science</td>
+                <td class="clickable-cell" data-period="2" data-option="C">Music</td>
+                <td class="clickable-cell" data-period="3" data-option="C">Drama</td>
+                <td class="clickable-cell" data-period="4" data-option="C">Literature</td>
+                <td class="clickable-cell" data-period="5" data-option="C">Economics</td>
+            </tr>
+            <tr>
+                <td>D</td>
+                <td class="clickable-cell" data-period="1" data-option="D">Art History</td>
+                <td class="clickable-cell" data-period="2" data-option="D">Philosophy</td>
+                <td class="clickable-cell" data-period="3" data-option="D">Sociology</td>
+                <td class="clickable-cell" data-period="4" data-option="D">Psychology</td>
+                <td class="clickable-cell" data-period="5" data-option="D">Statistics</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <h2>Select Subjects for Monday and Wednesday</h2>
+    <table id="grid2">
+        <thead>
+            <tr>
+                <th>Option / Period</th>
+                <th>Period 1</th>
+                <th>Period 2</th>
+                <th>Period 3</th>
+                <th>Period 4</th>
+                <th>Period 5</th>
+            </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <td>A</td>
+                <td class="clickable-cell" data-period="1" data-option="A">French</td>
+                <td class="clickable-cell" data-period="2" data-option="A">German</td>
+                <td class="clickable-cell" data-period="3" data-option="A">Latin</td>
+                <td class="clickable-cell" data-period="4" data-option="A">Italian</td>
+                <td class="clickable-cell" data-period="5" data-option="A">Spanish</td>
+            </tr>
+            <tr>
+                <td>B</td>
+                <td class="clickable-cell" data-period="1" data-option="B">Philosophy</td>
+                <td class="clickable-cell" data-period="2" data-option="B">Statistics</td>
+                <td class="clickable-cell" data-period="3" data-option="B">Economics</td>
+                <td class="clickable-cell" data-period="4" data-option="B">Geography</td>
+                <td class="clickable-cell" data-period="5" data-option="B">Art</td>
+            </tr>
+            <tr>
+                <td>C</td>
+                <td class="clickable-cell" data-period="1" data-option="C">Music</td>
+                <td class="clickable-cell" data-period="2" data-option="C">Dance</td>
+                <td class="clickable-cell" data-period="3" data-option="C">Drama</td>
+                <td class="clickable-cell" data-period="4" data-option="C">Visual Arts</td>
+                <td class="clickable-cell" data-period="5" data-option="C">History</td>
+            </tr>
+            <tr>
+                <td>D</td>
+                <td class="clickable-cell" data-period="1" data-option="D">Computer Science</td>
+                <td class="clickable-cell" data-period="2" data-option="D">Mathematics</td>
+                <td class="clickable-cell" data-period="3" data-option="D">Biology</td>
+                <td class="clickable-cell" data-period="4" data-option="D">Physics</td>
+                <td class="clickable-cell" data-period="5" data-option="D">Chemistry</td>
+            </tr>
+        </tbody>
+    </table>
+
+    <button onclick="generateAndDownloadTable()">Generate and Download Combined Table</button>
+
+    <div id="combinedTable" class="result-table"></div>
+
+    <script>
+        const selections1 = {}; // Stores selected subjects for grid1
+        const selections2 = {}; // Stores selected subjects for grid2
+
+        function setupGrid(gridId, store) {
+            const cells = document.querySelectorAll(`#${gridId} .clickable-cell`);
+            
+            cells.forEach(cell => {
+                cell.addEventListener('click', function() {
+                    const period = this.dataset.period;
+                    const option = this.dataset.option;
+
+                    // Deselect other options in the same period
+                    document.querySelectorAll(`#${gridId} .clickable-cell[data-period="${period}"]`).forEach(otherCell => {
+                        otherCell.classList.remove('selected');
+                        if (otherCell !== this) {
+                            store[period] = null;
+                        }
+                    });
+
+                    // Select the clicked cell
+                    this.classList.add('selected');
+                    store[period] = { option, subject: this.textContent };
+                });
+            });
+        }
+
+        setupGrid('grid1', selections1);
+        setupGrid('grid2', selections2);
+
+        function generateAndDownloadTable() {
+            const studentName = document.getElementById('studentName').value.trim();
+            if (!studentName) {
+                alert('Please enter your name.');
+                return;
+            }
+
+            // Check if all periods have a selection
+            if (Object.keys(selections1).length < 5 || Object.keys(selections2).length < 5) {
+                alert('Please make sure all periods are selected.');
+                return;
+            }
+
+            const combinedTable = document.getElementById('combinedTable');
+            combinedTable.innerHTML = '';
+
+            const table = document.createElement('table');
+            const thead = document.createElement('thead');
+            const tbody = document.createElement('tbody');
+
+            // Header row with student name
+            const headerRow = document.createElement('tr');
+            const headerCell = document.createElement('th');
+            headerCell.colSpan = 6;
+            headerCell.textContent = `${studentName}'s Combined Selected Subjects`;
+            headerRow.appendChild(headerCell);
+            thead.appendChild(headerRow);
+
+            // Table header
+            const header = document.createElement('tr');
+            header.appendChild(document.createElement('th')).textContent = 'Day / Period';
+            ['Period 1', 'Period 2', 'Period 3', 'Period 4', 'Period 5'].forEach(period => {
+                const th = document.createElement('th');
+                th.textContent = period;
+                header.appendChild(th);
+            });
+            thead.appendChild(header);
+
+            // Create table rows for each day
+            ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday'].forEach(day => {
+                const row = document.createElement('tr');
+                const dayCell = document.createElement('th');
+                dayCell.textContent = day;
+                row.appendChild(dayCell);
+
+                [1, 2, 3, 4, 5].forEach(period => {
+                    const cell = document.createElement('td');
+
+                    let subject;
+                    if (day === 'Monday' || day === 'Wednesday') {
+                        const selection = selections2[period];
+                        subject = selection ? selection.subject : '-';
+                    } else {
+                        const selection = selections1[period];
+                        subject = selection ? selection.subject : '-';
+                    }
+
+                    cell.textContent = subject;
+                    row.appendChild(cell);
+                });
+
+                tbody.appendChild(row);
+            });
+
+            table.appendChild(thead);
+            table.appendChild(tbody);
+            combinedTable.appendChild(table);
+
+            // Convert table to CSV and download
+            const csv = tableToCSV(table);
+            downloadCSV(csv, `${studentName}_combined_schedule.csv`);
+        }
+
+        function tableToCSV(table) {
+            let csv = '';
+            const rows = table.querySelectorAll('tr');
+            rows.forEach(row => {
+                const cols = row.querySelectorAll('td, th');
+                const data = Array.from(cols).map(col => col.textContent).join(',');
+                csv += data + '\n';
+            });
+            return csv;
+        }
+
+        function downloadCSV(csv, filename) {
+            const csvFile = new Blob([csv], { type: 'text/csv' });
+            const downloadLink = document.createElement('a');
+            downloadLink.download = filename;
+            downloadLink.href = URL.createObjectURL(csvFile);
+            downloadLink.style.display = 'none';
+            document.body.appendChild(downloadLink);
+            downloadLink.click();
+            document.body.removeChild(downloadLink);
+        }
+    </script>
+</body>
+</html>
